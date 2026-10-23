@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GAN 20 Anos · Jantar</title>
+<meta name="description" content="Escolhe o teu menu para o jantar dos 20 anos do GAN no SOHO Lisbon, 31 de outubro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Figtree:wght@400;500;600&family=Allura&display=swap">
+<style>
+/* Layout: invitation column beside a single ordering form; results under the form. Deliberately one dark look, like the poster. */
+:root{
+  --deep:#07090c;        /* page */
+  --water:#10151b;       /* panels */
+  --line:#262d36;
+  --ink:#f3ede4;
+  --mute:#a59d92;
+  --ember:#ff8a1e;       /* GAN orange */
+  --gold:#e9b866;
+  --veg:#7fae8a;
+  --f-display:"Unbounded",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-script:"Allura","Brush Script MT",cursive;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--deep)}
+body{margin:0;background:var(--deep);color:var(--ink);font:16px/1.55 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:max(20px,env(safe-area-inset-top,0px)) 48px;
+  background-image:radial-gradient(120% 60% at 50% -10%,rgba(255,138,30,.22),transparent 60%)}
+img{max-width:100%;display:block}
+.wrap{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:40px;align-items:start}
+@media (max-width:820px){.wrap{grid-template-columns:minmax(0,1fr);gap:28px}}
+
+.top{max-width:1080px;margin:0 auto 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font:700 15px/1 var(--f-display);letter-spacing:.06em}
+.brand span{color:var(--ember)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{background:none;border:0;color:var(--mute);font:600 13px var(--f-body);letter-spacing:.08em;padding:6px 14px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--ember);color:#1a0d00}
+
+aside{position:sticky;top:20px;display:grid;gap:16px}
+@media (max-width:820px){aside{position:static}}
+.poster{border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+@media (max-width:820px){.poster{max-width:320px}}
+.facts{display:grid;gap:10px;font-size:14px;color:var(--mute)}
+.facts b{color:var(--ink);font-weight:600}
+.facts a{color:var(--gold)}
+
+h1{font:700 clamp(28px,4.4vw,44px)/1.05 var(--f-display);margin:0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ember)}
+.tag{font:clamp(30px,4vw,40px)/1 var(--f-script);color:var(--gold);margin:6px 0 14px}
+.lede{color:var(--mute);max-width:60ch;margin:0 0 28px}
+
+form{display:grid;gap:26px}
+.field label.lbl,.legend{display:block;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+input[type=text],textarea{width:100%;background:var(--water);border:1px solid var(--line);color:var(--ink);font:16px var(--f-body);padding:12px 14px;border-radius:10px}
+textarea{min-height:70px;resize:vertical}
+input:focus-visible,textarea:focus-visible,button:focus-visible,.opt input:focus-visible+span{outline:2px solid var(--ember);outline-offset:2px}
+
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.course{display:grid;gap:8px}
+.course h3{margin:0 0 4px;font:500 13px var(--f-display);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.opts{display:grid;gap:8px}
+.menus{grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{position:relative;display:block;cursor:pointer}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt span{display:grid;gap:2px;padding:12px 14px 12px 42px;border:1px solid var(--line);border-radius:10px;background:var(--water);transition:border-color .15s,background .15s}
+.opt span::before{content:"";position:absolute;left:14px;top:15px;width:16px;height:16px;border-radius:50%;border:2px solid var(--mute)}
+.opt b{font-weight:600}
+.opt small{color:var(--mute);font-size:13px}
+.opt input:checked+span{border-color:var(--ember);background:#1c140c}
+.opt input:checked+span::before{border-color:var(--ember);background:radial-gradient(circle,var(--ember) 45%,transparent 50%)}
+.menus .opt[data-kind=veg] input:checked+span{border-color:var(--veg);background:#111a14}
+.menus .opt[data-kind=veg] input:checked+span::before{border-color:var(--veg);background:radial-gradient(circle,var(--veg) 45%,transparent 50%)}
+.fixed{padding:12px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--ink)}
+.fixed small{display:block;color:var(--mute);font-size:13px}
+.note{font-size:13px;color:var(--mute)}
+
+.check{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.check input{width:18px;height:18px;margin-top:3px;accent-color:var(--ember)}
+
+.submit{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-top:6px;border-top:1px solid var(--line)}
+.price{font:700 28px var(--f-display);font-variant-numeric:tabular-nums}
+.price small{font:500 13px var(--f-body);color:var(--mute);display:block}
+button.go{margin-left:auto;background:var(--ember);color:#1a0d00;border:0;border-radius:999px;font:700 14px var(--f-display);letter-spacing:.04em;padding:14px 26px;cursor:pointer}
+button.go:disabled{opacity:.5;cursor:wait}
+.msg{min-height:1.4em;font-size:14px}
+.msg.ok{color:var(--veg)} .msg.err{color:#ff7b6b}
+
+.results{margin-top:44px;border-top:1px solid var(--line);padding-top:28px}
+.results h2{font:700 20px var(--f-display);margin:0 0 4px}
+.count{display:flex;align-items:baseline;gap:12px;margin:12px 0 22px}
+.count b{font:700 56px/1 var(--f-display);color:var(--ember);font-variant-numeric:tabular-nums}
+.count span{color:var(--mute)}
+.bars{display:grid;gap:22px}
+.bars h3{margin:0 0 8px;font:500 12px var(--f-display);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;font-size:14px;margin-bottom:8px}
+.bar .track{grid-column:1/-1;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.bar .fill{height:100%;background:var(--ember);border-radius:3px;transition:width .5s}
+.bar.veg .fill{background:var(--veg)}
+.bar .n{font-variant-numeric:tabular-nums;color:var(--mute)}
+.demo{margin-top:16px;font-size:13px;color:var(--mute);border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+.hint{margin:6px 0 0}
+.deadline{display:inline-block;margin:-12px 0 24px;padding:6px 12px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);font-size:14px;font-weight:600}
+.closed{margin:0 0 24px;padding:16px;border-radius:10px;background:#1c140c;border:1px solid var(--ember)}
+form.is-closed{opacity:.45;pointer-events:none}
+.wa{justify-self:start;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:#1f3a2a;color:#d6f5df;text-decoration:none;font-weight:600;font-size:14px;border:1px solid #2f5a40}
+.wa::before{content:"";width:9px;height:9px;border-radius:50%;background:#46c26f}
+.wa:hover{background:#264733}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">GAN<span>·</span>ACD 20</div>
+  <div class="lang" role="group" aria-label="Idioma / Language">
+    <button type="button" id="lang-pt" data-lang="pt" aria-pressed="true">PT</button>
+    <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <aside>
+    <div class="poster"><img src="convite.jpg" alt="Convite GAN 20 Anos, jantar no SOHO Lisbon, sábado 31 de outubro às 20h00" width="941" height="1672"></div>
+    <div class="facts">
+      <div><b data-t="date">Sábado, 31 de outubro · 20h00</b></div>
+      <div><b>SOHO Lisbon</b><br>Rua de Cascais, 53 · Lisboa<br><a href="https://soholisbon.com/" target="_blank" rel="noopener">soholisbon.com</a></div>
+    </div>
+    <a class="wa" id="wa" href="https://wa.me/" target="_blank" rel="noopener" data-t="share">Partilhar no WhatsApp</a>
+  </aside>
+
+  <section>
+    <h1 data-t="title">20 anos do GAN. <em>Escolhe o teu jantar.</em></h1>
+    <p class="tag" data-t="tagline">Juntos dentro e fora de água</p>
+    <p class="lede" data-t="lede">Escolhe um prato de cada parte do menu. Cada inscrição conta como um participante, por isso preenche uma por pessoa.</p>
+    <p class="deadline" id="deadline" data-t="deadline">Inscrições até domingo, 25 de outubro, às 23h59.</p>
+    <div class="closed" id="closed" hidden data-t="closed">As inscrições fecharam a 25 de outubro. Obrigado a todos! Para alterações fala diretamente com a organização.</div>
+
+    <form id="f" novalidate>
+      <div class="field">
+        <label class="lbl" for="name" data-t="name">Nome</label>
+        <input type="text" id="name" name="name" autocomplete="name" maxlength="80" required>
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="contact" data-t="contact">Telemóvel ou email</label>
+        <input type="text" id="contact" name="contact" autocomplete="tel" maxlength="80" required>
+        <p class="note hint" data-t="contact_h">Serve para te identificar. Se já respondeste e quiseres mudar, usa o mesmo contacto e a escolha anterior é substituída.</p>
+      </div>
+
+      <fieldset>
+        <legend class="legend" data-t="menu">Menu</legend>
+        <div class="opts menus">
+          <label class="opt" data-kind="regular"><input type="radio" id="menu-regular" name="menu" value="regular" checked><span><b data-t="m_regular">Regular</b><small>30€</small></span></label>
+          <label class="opt" data-kind="veg"><input type="radio" id="menu-veg" name="menu" value="veg"><span><b data-t="m_veg">Vegetariano</b><small>30€</small></span></label>
+        </div>
+      </fieldset>
+
+      <div class="course">
+        <h3 data-t="couvert">Couvert</h3>
+        <div class="fixed" data-t="couvert_d">Pão, azeite, azeitonas</div>
+      </div>
+
+      <fieldset class="course" id="c-starter">
+        <h3 data-t="starter">Entrada</h3>
+        <div class="opts" id="starter-reg">
+          <label class="opt"><input type="radio" id="s-carpaccio" name="starter" value="carpaccio"><span><b data-t="carpaccio">Carpaccio de novilho</b><small data-t="carpaccio_d">Pesto, parmesão, rúcula e alcaparras</small></span></label>
+          <label class="opt"><input type="radio" id="s-creme" name="starter" value="creme"><span><b data-t="creme">Creme de cenoura assada e alho francês</b></span></label>
+        </div>
+        <div class="fixed" id="starter-veg" hidden><span data-t="creme">Creme de cenoura assada e alho francês</span><small data-t="fixed">Incluído no menu vegetariano</small></div>
+      </fieldset>
+
+      <fieldset class="course" id="c-main">
+        <h3 data-t="main">Prato principal</h3>
+        <div class="opts" id="main-reg">
+          <label class="opt"><input type="radio" id="p-medalhao" name="main" value="medalhao"><span><b data-t="medalhao">Medalhão do lombo com batata gratinada</b><small data-t="medalhao_d">Molho de cogumelos e trufa preta</small></span></label>
+          <label class="opt"><input type="radio" id="p-bacalhau" name="main" value="bacalhau"><span><b data-t="bacalhau">Lombo de bacalhau com texturas de grão</b><small data-t="bacalhau_d">Condimento de pimentos e azeitona</small></span></label>
+        </div>
+        <div class="fixed" id="main-veg" hidden><span data-t="lasanha">Lasanha de espinafres e tomate confit</span><small data-t="fixed">Incluído no menu vegetariano</small></div>
+      </fieldset>
+
+      <fieldset class="course">
+        <h3 data-t="dessert">Sobremesa</h3>
+        <div class="opts">
+          <label class="opt"><input type="radio" id="d-fondant" name="dessert" value="fondant"><span><b data-t="fondant">Fondant de doce de leite com gelado</b></span></label>
+          <label class="opt"><input type="radio" id="d-fruta" name="dessert" value="fruta"><span><b data-t="fruta">Cocktail de fruta fresca</b></span></label>
+        </div>
+        <p class="note" data-t="coffee">Inclui café.</p>
+      </fieldset>
+
+      <label class="check" for="drinks"><input type="checkbox" id="drinks" name="drinks"><span data-t="drinks">Bebidas à descrição (+5€): água, cervejas, refrigerantes, vinho branco, tinto e sangria</span></label>
+
+      <div class="field">
+        <label class="lbl" for="notes" data-t="notes">Alergias ou notas (opcional)</label>
+        <textarea id="notes" name="notes" maxlength="300"></textarea>
+      </div>
+
+      <div class="submit">
+        <div class="price"><span id="total">30€</span><small data-t="vat">IVA incluído</small></div>
+        <button class="go" type="submit" id="go" data-t="send">Confirmar escolha</button>
+      </div>
+      <p class="msg" id="msg" role="status" aria-live="polite"></p>
+    </form>
+
+    <section class="results" aria-labelledby="r-h">
+      <h2 id="r-h" data-t="r_title">Escolhas até agora</h2>
+      <div class="count"><b id="r-total">0</b><span data-t="r_people">participantes confirmados</span></div>
+      <div class="bars" id="bars"></div>
+      <p class="demo" id="demo" hidden data-t="demo">Modo de pré-visualização: as respostas ficam só neste navegador até ligares a página ao Google Sheets (ver README).</p>
+    </section>
+  </section>
+</main>
+
+<script>
+/* 1) Cola aqui o URL da tua Web App do Google Apps Script (termina em /exec). */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNJtnD6A2Ufq801hV1TbxZWXnbz2V6OiCvWmTdODXVu94VWYOdq514n5f48WEpkJlMcg/exec";
+
+const T = {
+  pt:{date:"Sábado, 31 de outubro · 20h00",title:'20 anos do GAN. <em>Escolhe o teu jantar.</em>',tagline:"Juntos dentro e fora de água",
+    lede:"Escolhe um prato de cada parte do menu. Cada inscrição conta como um participante, por isso preenche uma por pessoa.",
+    name:"Nome",menu:"Menu",m_regular:"Regular",m_veg:"Vegetariano",couvert:"Couvert",couvert_d:"Pão, azeite, azeitonas",
+    starter:"Entrada",carpaccio:"Carpaccio de novilho",carpaccio_d:"Pesto, parmesão, rúcula e alcaparras",creme:"Creme de cenoura assada e alho francês",
+    fixed:"Incluído no menu vegetariano",main:"Prato principal",medalhao:"Medalhão do lombo com batata gratinada",medalhao_d:"Molho de cogumelos e trufa preta",
+    bacalhau:"Lombo de bacalhau com texturas de grão",bacalhau_d:"Condimento de pimentos e azeitona",lasanha:"Lasanha de espinafres e tomate confit",
+    dessert:"Sobremesa",fondant:"Fondant de doce de leite com gelado",fruta:"Cocktail de fruta fresca",coffee:"Inclui café.",
+    drinks:"Bebidas à descrição (+5€): água, cervejas, refrigerantes, vinho branco, tinto e sangria",notes:"Alergias ou notas (opcional)",
+    vat:"IVA incluído",send:"Confirmar escolha",sending:"A enviar…",r_title:"Escolhas até agora",r_people:"participantes confirmados",
+    demo:"Modo de pré-visualização: as respostas ficam só neste navegador até ligares a página ao Google Sheets (ver README).",
+    e_name:"Escreve o teu nome.",e_starter:"Escolhe a entrada.",e_main:"Escolhe o prato principal.",e_dessert:"Escolhe a sobremesa.",
+    e_net:"Não foi possível enviar. Verifica a ligação e tenta outra vez.",ok:"Obrigado, {n}! A tua escolha foi registada.",
+    withDrinks:"com bebidas",menus:"Menus",
+    contact:"Telemóvel ou email",contact_h:"Serve para te identificar. Se já respondeste e quiseres mudar, usa o mesmo contacto e a escolha anterior é substituída.",
+    e_contact:"Indica um telemóvel (9 dígitos ou mais) ou um email válido.",updated:"Feito, {n}! A tua escolha anterior foi substituída.",
+    deadline:"Inscrições até domingo, 25 de outubro, às 23h59.",closed:"As inscrições fecharam a 25 de outubro. Obrigado a todos! Para alterações fala diretamente com a organização.",
+    e_closed:"As inscrições já fecharam.",share:"Partilhar no WhatsApp",
+    wa_text:"🏊 GAN 20 Anos · Jantar no SOHO Lisbon, sábado 31 out às 20h. Escolhe o teu menu até 25 out: "},
+  en:{date:"Saturday, 31 October · 8 pm",title:'GAN turns 20. <em>Choose your dinner.</em>',tagline:"Together in and out of the water",
+    lede:"Pick one dish from each part of the menu. Each sign up counts as one guest, so fill in one per person.",
+    name:"Name",menu:"Menu",m_regular:"Regular",m_veg:"Vegetarian",couvert:"Couvert",couvert_d:"Bread, olive oil, olives",
+    starter:"Starter",carpaccio:"Beef carpaccio",carpaccio_d:"Pesto, parmesan, rocket and capers",creme:"Roasted carrot and leek soup",
+    fixed:"Included in the vegetarian menu",main:"Main course",medalhao:"Beef tenderloin medallion with potato gratin",medalhao_d:"Mushroom and black truffle sauce",
+    bacalhau:"Cod loin with chickpea textures",bacalhau_d:"Pepper and olive relish",lasanha:"Spinach lasagna with tomato confit",
+    dessert:"Dessert",fondant:"Dulce de leche fondant with ice cream",fruta:"Fresh fruit cocktail",coffee:"Coffee included.",
+    drinks:"Unlimited drinks (+5€): water, beer, soft drinks, white and red wine, sangria",notes:"Allergies or notes (optional)",
+    vat:"VAT included",send:"Confirm my choice",sending:"Sending…",r_title:"Choices so far",r_people:"confirmed guests",
+    demo:"Preview mode: answers are kept only in this browser until you connect the page to Google Sheets (see README).",
+    e_name:"Please enter your name.",e_starter:"Please choose a starter.",e_main:"Please choose a main course.",e_dessert:"Please choose a dessert.",
+    e_net:"Could not send. Check your connection and try again.",ok:"Thank you, {n}! Your choice is saved.",
+    withDrinks:"with drinks",menus:"Menus",
+    contact:"Mobile number or email",contact_h:"Used to identify you. If you already answered and want to change, use the same contact and your previous choice is replaced.",
+    e_contact:"Enter a mobile number (9 digits or more) or a valid email.",updated:"Done, {n}! Your previous choice was replaced.",
+    deadline:"Sign up by Sunday, 25 October, 11:59 pm.",closed:"Sign ups closed on 25 October. Thank you all! For changes, contact the organisers directly.",
+    e_closed:"Sign ups are closed.",share:"Share on WhatsApp",
+    wa_text:"🏊 GAN 20 years · Dinner at SOHO Lisbon, Saturday 31 Oct at 8 pm. Choose your menu by 25 Oct: "}
+};
+let lang = "pt", summary = null;
+try { const l = localStorage.getItem("gan-lang"); if (l === "en" || l === "pt") lang = l; } catch(e){}
+
+const $ = s => document.querySelector(s);
+const f = $("#f");
+
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-t]").forEach(el => {
+    const v = T[lang][el.dataset.t]; if (v == null) return;
+    if (el.dataset.t === "title") el.innerHTML = v; else el.textContent = v;
+  });
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
+  const pageUrl = location.href.split("#")[0].split("?")[0];
+  $("#wa").href = "https://wa.me/?text=" + encodeURIComponent(T[lang].wa_text + pageUrl);
+  render();
+}
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => {
+  lang = b.dataset.lang; try { localStorage.setItem("gan-lang", lang); } catch(e){} applyLang();
+}));
+
+function syncMenu(){
+  const veg = f.menu.value === "veg";
+  $("#starter-reg").hidden = veg; $("#starter-veg").hidden = !veg;
+  $("#main-reg").hidden = veg;    $("#main-veg").hidden = !veg;
+  $("#total").textContent = ($("#drinks").checked ? 35 : 30) + "€";
+}
+f.addEventListener("change", syncMenu);
+
+function msg(text, cls){ const m = $("#msg"); m.textContent = text; m.className = "msg " + (cls||""); }
+
+f.addEventListener("submit", async e => {
+  e.preventDefault();
+  const t = T[lang], veg = f.menu.value === "veg";
+  const data = {
+    name: f.name.value.trim(), contact: f.contact.value.trim(), menu: f.menu.value,
+    starter: veg ? "creme" : f.starter.value, main: veg ? "lasanha" : f.main.value,
+    dessert: f.dessert.value, drinks: $("#drinks").checked, notes: f.notes.value.trim()
+  };
+  if (isClosed()) { msg(t.e_closed, "err"); return; }
+  if (!data.name) { msg(t.e_name, "err"); f.name.focus(); return; }
+  if (!contactKey(data.contact)) { msg(t.e_contact, "err"); f.contact.focus(); return; }
+  if (!data.starter) { msg(t.e_starter, "err"); return; }
+  if (!data.main) { msg(t.e_main, "err"); return; }
+  if (!data.dessert) { msg(t.e_dessert, "err"); return; }
+
+  const btn = $("#go"); btn.disabled = true; btn.textContent = t.sending;
+  try {
+    if (SCRIPT_URL) {
+      const r = await fetch(SCRIPT_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify(data) });
+      const j = await r.json();
+      if (j.error === "closed") { closedAt = true; showClosed(); if (j.summary) { summary = j.summary; render(); } return; }
+      if (j.error === "contact") { msg(t.e_contact, "err"); return; }
+      if (!j.ok) throw new Error(j.error);
+      summary = j.summary; updated = j.updated;
+    } else {
+      const all = localRows(), k = contactKey(data.contact);
+      const i = all.findIndex(r => contactKey(r.contact) === k);
+      updated = i > -1;
+      if (updated) all[i] = data; else all.push(data);
+      try { localStorage.setItem("gan-demo", JSON.stringify(all)); } catch(e){}
+      summary = summarize(all);
+    }
+    msg((updated ? t.updated : t.ok).replace("{n}", data.name.split(" ")[0]), "ok");
+    f.reset(); syncMenu(); render();
+  } catch(err) {
+    msg(t.e_net, "err");
+  } finally {
+    btn.disabled = false; btn.textContent = T[lang].send;
+  }
+});
+
+// Fecha no fim de 25 out em Lisboa (nessa noite a hora muda para UTC+0)
+const DEADLINE = new Date("2026-10-26T00:00:00Z");
+let closedAt = false, updated = false;
+function isClosed(){ return closedAt || Date.now() >= DEADLINE.getTime(); }
+function showClosed(){ $("#closed").hidden = false; $("#deadline").hidden = true; f.classList.add("is-closed"); f.setAttribute("aria-disabled", "true"); }
+function contactKey(raw){
+  const s = String(raw || "").trim();
+  if (s.includes("@")) return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) ? s.toLowerCase() : "";
+  let d = s.replace(/\D/g, "");
+  if (d.startsWith("00")) d = d.slice(2);
+  if (d.startsWith("351") && d.length === 12) d = d.slice(3);
+  return d.length >= 9 && d.length <= 15 ? d : "";
+}
+function localRows(){ try { return JSON.parse(localStorage.getItem("gan-demo")) || []; } catch(e){ return []; } }
+function summarize(rows){
+  const s = { total: rows.length, drinks: 0, menu:{}, starter:{}, main:{}, dessert:{} };
+  rows.forEach(r => { ["menu","starter","main","dessert"].forEach(c => s[c][r[c]] = (s[c][r[c]]||0) + 1); if (r.drinks) s.drinks++; });
+  return s;
+}
+
+function render(){
+  const s = summary || { total:0, drinks:0, menu:{}, starter:{}, main:{}, dessert:{} };
+  const t = T[lang];
+  $("#r-total").textContent = s.total;
+  const groups = [
+    [t.menus, "menu", [["regular", t.m_regular], ["veg", t.m_veg, "veg"]]],
+    [t.starter, "starter", [["carpaccio", t.carpaccio], ["creme", t.creme]]],
+    [t.main, "main", [["medalhao", t.medalhao], ["bacalhau", t.bacalhau], ["lasanha", t.lasanha, "veg"]]],
+    [t.dessert, "dessert", [["fondant", t.fondant], ["fruta", t.fruta]]],
+  ];
+  const bars = $("#bars"); bars.textContent = "";
+  groups.forEach(([title, key, items]) => {
+    const g = document.createElement("div");
+    const h = document.createElement("h3"); h.textContent = title; g.appendChild(h);
+    items.forEach(([k, label, cls]) => {
+      const n = s[key][k] || 0, pct = s.total ? Math.round(n / s.total * 100) : 0;
+      const row = document.createElement("div"); row.className = "bar" + (cls ? " " + cls : "");
+      const l = document.createElement("span"); l.textContent = label;
+      const c = document.createElement("span"); c.className = "n"; c.textContent = n;
+      const tr = document.createElement("div"); tr.className = "track";
+      const fi = document.createElement("div"); fi.className = "fill"; fi.style.width = pct + "%";
+      tr.appendChild(fi); row.append(l, c, tr); g.appendChild(row);
+    });
+    if (key === "dessert") {
+      const d = document.createElement("p"); d.className = "note";
+      d.textContent = "+5€ " + t.withDrinks + ": " + s.drinks; g.appendChild(d);
+    }
+    bars.appendChild(g);
+  });
+}
+
+async function load(){
+  if (isClosed()) showClosed();
+  if (!SCRIPT_URL) { $("#demo").hidden = false; summary = summarize(localRows()); render(); return; }
+  try { const r = await fetch(SCRIPT_URL); const j = await r.json(); if (j.ok) { summary = j.summary; if (j.closed) { closedAt = true; showClosed(); } render(); } } catch(e){}
+}
+
+syncMenu(); applyLang(); load();
+setInterval(() => { if (SCRIPT_URL && !document.hidden) load(); }, 60000);
+</script>
+</body>
+</html>
